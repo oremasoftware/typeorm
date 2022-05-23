@@ -2,7 +2,6 @@ import * as path from "path"
 import * as fs from "fs"
 import dotenv from "dotenv"
 import chalk from "chalk"
-import { highlight, Theme } from "cli-highlight"
 
 export { ReadStream } from "fs"
 export { EventEmitter } from "events"
@@ -204,22 +203,24 @@ export class PlatformTools {
      * Highlights sql string to be print in the console.
      */
     static highlightSql(sql: string) {
-        const theme: Theme = {
-            keyword: chalk.blueBright,
-            literal: chalk.blueBright,
-            string: chalk.white,
-            type: chalk.magentaBright,
-            built_in: chalk.magentaBright,
-            comment: chalk.gray,
-        }
-        return highlight(sql, { theme: theme, language: "sql" })
+        // const theme: Theme = {
+        //     keyword: chalk.blueBright,
+        //     literal: chalk.blueBright,
+        //     string: chalk.white,
+        //     type: chalk.magentaBright,
+        //     built_in: chalk.magentaBright,
+        //     comment: chalk.gray,
+        // }
+        // return highlight(sql, { theme: theme, language: "sql" })
+        return sql;
     }
 
     /**
      * Highlights json string to be print in the console.
      */
     static highlightJson(json: string) {
-        return highlight(json, { language: "json" })
+        // return highlight(json, { language: "json" })
+        return json;
     }
 
     /**
