@@ -118,7 +118,7 @@ export interface SqlServerConnectionOptions extends BaseDataSourceOptions, SqlSe
          */
         readonly packetSize?: number;
         /**
-         * A boolean determining whether to pass time values in UTC or local time. (default: true).
+         * A boolean determining whether to pass time values in UTC or local time. (default: false).
          */
         readonly useUTC?: boolean;
         /**

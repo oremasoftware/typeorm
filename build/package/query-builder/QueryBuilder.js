@@ -184,7 +184,7 @@ class QueryBuilder {
     /**
      * Sets parameter name and its value.
      *
-     * The key for this parametere may contain numbers, letters, underscores, or periods.
+     * The key for this parameter may contain numbers, letters, underscores, or periods.
      */
     setParameter(key, value) {
         if (typeof value === "function") {
@@ -453,7 +453,7 @@ class QueryBuilder {
             // * Relation Property Path to first join column key
             // * Relation Property Path + Column Path
             // * Column Database Name
-            // * Column Propety Name
+            // * Column Property Name
             // * Column Property Path
             for (const relation of alias.metadata.relations) {
                 if (relation.joinColumns.length > 0)
@@ -478,16 +478,18 @@ class QueryBuilder {
             for (const column of alias.metadata.columns) {
                 replacements[column.propertyPath] = column.databaseName;
             }
-            const replacementKeys = Object.keys(replacements);
-            if (replacementKeys.length) {
-                statement = statement.replace(new RegExp(
-                // Avoid a lookbehind here since it's not well supported
-                `([ =\(]|^.{0})` +
-                    `${(0, escapeRegExp_1.escapeRegExp)(replaceAliasNamePrefix)}(${replacementKeys
-                        .map(escapeRegExp_1.escapeRegExp)
-                        .join("|")})` +
-                    `(?=[ =\)\,]|.{0}$)`, "gm"), (_, pre, p) => `${pre}${replacementAliasNamePrefix}${this.escape(replacements[p])}`);
-            }
+            statement = statement.replace(new RegExp(
+            // Avoid a lookbehind here since it's not well supported
+            `([ =\(]|^.{0})` + // any of ' =(' or start of line
+                // followed by our prefix, e.g. 'tablename.' or ''
+                `${(0, escapeRegExp_1.escapeRegExp)(replaceAliasNamePrefix)}([^ =\(\)\,]+)` + // a possible property name: sequence of anything but ' =(),'
+                // terminated by ' =),' or end of line
+                `(?=[ =\)\,]|.{0}$)`, "gm"), (match, pre, p) => {
+                if (replacements[p]) {
+                    return `${pre}${replacementAliasNamePrefix}${this.escape(replacements[p])}`;
+                }
+                return match;
+            });
         }
         return statement;
     }
