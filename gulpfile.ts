@@ -9,8 +9,7 @@ const gulp = require("gulp");
 const del = require("del");
 const shell = require("gulp-shell");
 const replace = require("gulp-replace");
-const rename = require("gulp-rename");
-const sourcemaps = require("gulp-sourcemaps");
+//const sourcemaps = require("gulp-sourcemaps");
 const ts = require("gulp-typescript");
 
 @Gulpclass()
@@ -49,59 +48,59 @@ export class Gulpfile {
     // Build and packaging for browser
     // -------------------------------------------------------------------------
 
-    /**
-     * Copies all source files into destination folder in a correct structure.
-     */
-    @Task()
-    browserCopySources() {
-        return gulp.src([
-            "./src/**/*.ts",
-            "!./src/commands/*.ts",
-            "!./src/cli.ts",
-            "!./src/typeorm.ts",
-            "!./src/typeorm-model-shim.ts"
-        ])
-        .pipe(gulp.dest("./build/browser/src"));
-    }
-
-    /**
-     * Copies templates for compilation
-     */
-    @Task()
-    browserCopyTemplates() {
-        return gulp.src("./src/platform/*.template")
-            .pipe(rename((p: any) => { p.extname = '.ts'; }))
-            .pipe(gulp.dest("./build/browser/src/platform"));
-    }
-
-    @MergedTask()
-    browserCompile() {
-        const tsProject = ts.createProject("tsconfig.json", {
-            module: "es2015",
-            "lib": ["es5", "es6", "dom"],
-            typescript: require("typescript")
-        });
-        const tsResult = gulp.src([
-            "./build/browser/src/**/*.ts",
-            "./node_modules/reflect-metadata/**/*.d.ts"
-        ])
-            .pipe(sourcemaps.init())
-            .pipe(tsProject());
-
-        return [
-            tsResult.dts.pipe(gulp.dest("./build/package/browser")),
-            tsResult.js
-                .pipe(sourcemaps.write(".", { sourceRoot: "", includeContent: true }))
-                .pipe(gulp.dest("./build/package/browser"))
-        ];
-    }
-
-    @Task()
-    browserClearPackageDirectory(cb: Function) {
-        return del([
-            "./build/browser/**"
-        ]);
-    }
+    // /**
+    //  * Copies all source files into destination folder in a correct structure.
+    //  */
+    // @Task()
+    // browserCopySources() {
+    //     return gulp.src([
+    //         "./src/**/*.ts",
+    //         "!./src/commands/*.ts",
+    //         "!./src/cli.ts",
+    //         "!./src/typeorm.ts",
+    //         "!./src/typeorm-model-shim.ts"
+    //     ])
+    //     .pipe(gulp.dest("./build/browser/src"));
+    // }
+    //
+    // /**
+    //  * Copies templates for compilation
+    //  */
+    // @Task()
+    // browserCopyTemplates() {
+    //     return gulp.src("./src/platform/*.template")
+    //         .pipe(rename((p: any) => { p.extname = '.ts'; }))
+    //         .pipe(gulp.dest("./build/browser/src/platform"));
+    // }
+    //
+    // @MergedTask()
+    // browserCompile() {
+    //     const tsProject = ts.createProject("tsconfig.json", {
+    //         module: "es2015",
+    //         "lib": ["es5", "es6", "dom"],
+    //         typescript: require("typescript")
+    //     });
+    //     const tsResult = gulp.src([
+    //         "./build/browser/src/**/*.ts",
+    //         "./node_modules/reflect-metadata/**/*.d.ts"
+    //     ])
+    //         .pipe(sourcemaps.init())
+    //         .pipe(tsProject());
+    //
+    //     return [
+    //         tsResult.dts.pipe(gulp.dest("./build/package/browser")),
+    //         tsResult.js
+    //             .pipe(sourcemaps.write(".", { sourceRoot: "", includeContent: true }))
+    //             .pipe(gulp.dest("./build/package/browser"))
+    //     ];
+    // }
+    //
+    // @Task()
+    // browserClearPackageDirectory(cb: Function) {
+    //     return del([
+    //         "./build/browser/**"
+    //     ]);
+    // }
 
     // -------------------------------------------------------------------------
     // Main Packaging and Publishing tasks
@@ -117,7 +116,7 @@ export class Gulpfile {
                 "cd ./build/package && npm publish"
             ]));
     }
-    
+
     /**
      * Packs a .tgz from ./build/package directory.
      */
@@ -151,13 +150,13 @@ export class Gulpfile {
         const tsResult = gulp.src([
             "./src/**/*.ts"
         ])
-            .pipe(sourcemaps.init())
+            //.pipe(sourcemaps.init())
             .pipe(tsProject());
 
         return [
             tsResult.dts.pipe(gulp.dest("./build/package")),
             tsResult.js
-                .pipe(sourcemaps.write(".", { sourceRoot: "", includeContent: true }))
+                //.pipe(sourcemaps.write(".", { sourceRoot: "", includeContent: true }))
                 .pipe(gulp.dest("./build/package"))
         ];
     }
@@ -246,12 +245,12 @@ export class Gulpfile {
     package() {
         return [
             "clean",
-            ["browserCopySources", "browserCopyTemplates"],
-            ["packageCompile", "browserCompile"],
+            //["browserCopySources", "browserCopyTemplates"],
+            ["packageCompile"],
             "packageMoveCompiledFiles",
             "packageCreateEsmIndex",
             [
-                "browserClearPackageDirectory",
+                //"browserClearPackageDirectory",
                 "packageClearPackageDirectory",
                 "packageReplaceReferences",
                 "packagePreparePackageFile",

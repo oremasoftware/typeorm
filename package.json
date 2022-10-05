@@ -14,11 +14,9 @@
   },
   "exports": {
     ".": {
-      "types": "./index.d.ts",
       "node": {
         "import": "./index.mjs",
-        "require": "./index.js",
-        "types": "./index.d.ts"
+        "require": "./index.js"
       },
       "browser": {
         "require": "./index.js",
@@ -220,8 +218,6 @@
     "app-root-path": "^3.0.0",
     "buffer": "^6.0.3",
     "chalk": "^4.1.0",
-    "cli-highlight": "^2.1.11",
-    "date-fns": "^2.28.0",
     "debug": "^4.3.3",
     "dotenv": "^16.0.0",
     "glob": "^7.2.0",
@@ -232,7 +228,8 @@
     "tslib": "^2.3.1",
     "uuid": "^8.3.2",
     "xml2js": "^0.4.23",
-    "yargs": "^17.3.1"
+    "yargs": "^17.3.1",
+    "dayjs": "1.11.5"
   },
   "scripts": {
     "test": "rimraf ./build && tsc && mocha --file ./build/compiled/test/utils/test-setup.js --bail --recursive --timeout 60000 ./build/compiled/test",
@@ -246,9 +243,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 2"
   },
   "bin": {
-    "typeorm": "./cli.js",
-    "typeorm-ts-node-commonjs": "./cli-ts-node-commonjs.js",
-    "typeorm-ts-node-esm": "./cli-ts-node-esm.js"
+    "typeorm": "./cli.js"
   },
   "funding": "https://opencollective.com/typeorm",
   "collective": {
